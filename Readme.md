@@ -26,10 +26,20 @@ Bind the function `mjolnir.th.hints.windowHints` in your `init.lua` to a key lik
 local hints = require "mjolnir.th.hints"
 hotkey.bind({"cmd"},"e",hints.windowHints)
 ```
+You can also use `hints.appHints` to switch between windows in an app:
+
+```lua
+-- This switches between windows of the focused app
+hotkey.bind({"ctrl","cmd"},"j",function() hints.appHints(window.focusedwindow():application()) end)
+
+-- You can also use this with appfinder to switch to windows of a specific app
+local appfinder = require "mjolnir.cmsj.appfinder"
+hotkey.bind({"ctrl","cmd"},"k",function() hints.appHints(appfinder.app_from_name("Emacs")) end)
+```
 
 ## Screenshot
 
-![Screenshot](http://i.imgur.com/ktLgBWO.jpg)
+![Screenshot](http://i.imgur.com/ktLgBWO.png)
 
 Hints are centered on the window they will switch to and have a unique key.
 
@@ -38,3 +48,7 @@ to ANY currently open window in 2 key strokes.
 
 Also note the vertical line of hints in the center, these are all maximized
 windows but the hints are spread out so they don't collide.
+
+![App switching](http://i.imgur.com/Fb1a0T0.png)
+
+You can also switch windows within an app, in this case the window titles are also shown.
