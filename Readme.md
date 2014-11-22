@@ -9,7 +9,11 @@ for use by others.
 
 ## Installation
 
-Not on luarocks yet so you have to compile it yourself. You'll need to install Mjolnir
+You can install from luarocks by running the command below. You'll need to install Mjolnir and luarocks beforehand.
+
+    luarocks install mjolnir.th.hints
+
+You can also install from source. You'll need to install Mjolnir
 and possibly moonrocks (`luarocks install --server=http://rocks.moonscript.org moonrocks`).
 
 Then just run `luarocks make` in a clone of this git repo and it should install.
