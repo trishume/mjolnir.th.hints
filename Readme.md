@@ -12,3 +12,9 @@ for use by others.
 ![Screenshot](http://i.imgur.com/ktLgBWO.jpg)
 
 Hints are centered on the window they will switch to and have a unique key.
+
+Note that the hints still show for hidden windows, this means you can switch
+to ANY currently open window in 2 key strokes.
+
+Also note the vertical line of hints in the center, these are all maximized
+windows but the hints are spread out so they don't collide.
