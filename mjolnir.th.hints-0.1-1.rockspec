@@ -35,6 +35,8 @@ dependencies = {
   -- uncomment the following line:
   --
   -- "mjolnir.fnutils",
+  "mjolnir.application",
+  "mjolnir._asm.modal_hotkey"
 }
 
 -- Build rules:

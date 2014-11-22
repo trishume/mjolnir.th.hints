@@ -4,7 +4,6 @@ local hints = require "mjolnir.th.hints.internal"
 -- Always return your top-level module; never set globals.
 local screen = require "mjolnir.screen"
 local window = require "mjolnir.window"
-local alert = require "mjolnir.alert"
 local modal_hotkey = require "mjolnir._asm.modal_hotkey"
 
 local hintChars = {"A","O","E","U","I","D","H","T","N","S","P","G",
@@ -31,14 +30,14 @@ function hints.createHandler(char)
   return function()
     local win = hintDict[char]
     if win then win:focus() end
-    hints.testClose()
+    hints.closeHints()
     modalKey:exit()
   end
 end
 
 function hints.setupModal()
   k = modal_hotkey.new({"cmd", "shift"}, "V")
-  k:bind({}, 'escape', function() hints.testClose(); k:exit() end)
+  k:bind({}, 'escape', function() hints.closeHints(); k:exit() end)
 
   for i,c in ipairs(hintChars) do
     k:bind({}, c, hints.createHandler(c))
@@ -47,8 +46,8 @@ function hints.setupModal()
 end
 modalKey = hints.setupModal()
 
-function hints.testCreate()
-  hints.testClose()
+function hints.windowHints()
+  hints.closeHints()
   for i,win in ipairs(window.allwindows()) do
     local app = win:application()
     local fr = win:frame()
@@ -64,7 +63,7 @@ function hints.testCreate()
   modalKey:enter()
 end
 
-function hints.testClose()
+function hints.closeHints()
   for i, hint in ipairs(openHints) do
     hint:close()
   end

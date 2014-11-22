@@ -7,6 +7,22 @@ typing that letter focuses the corresponding window.
 Currently it is in a very hacky state, it works for me but is not packaged
 for use by others.
 
+## Installation
+
+Not on luarocks yet so you have to compile it yourself. You'll need to install Mjolnir
+and possibly moonrocks (`luarocks install --server=http://rocks.moonscript.org moonrocks`).
+
+Then just run `luarocks make` in a clone of this git repo and it should install.
+
+## Usage
+
+Bind the function `mjolnir.th.hints.windowHints` in your `init.lua` to a key like this:
+
+```lua
+local hints = require "mjolnir.th.hints"
+hotkey.bind({"cmd"},"e",hints.windowHints)
+```
+
 ## Screenshot
 
 ![Screenshot](http://i.imgur.com/ktLgBWO.jpg)
