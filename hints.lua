@@ -17,16 +17,20 @@ local modalKey = nil
 
 local bumpThresh = 40^2
 local bumpMove = 80
-function hints.bumpPos(x,y)
+function hints._bumpPos(x,y)
   for i, pos in ipairs(takenPositions) do
     if pos and ((pos.x-x)^2 + (pos.y-y)^2) < bumpThresh then
-      return hints.bumpPos(x,y+bumpMove)
+      return hints._bumpPos(x,y+bumpMove)
     end
   end
 
   return {x = x,y = y}
 end
 
+-- Creates a raw hint
+-- x,y are the position of the hint
+-- txt is the label, app is a mjolnir app to use for the icon
+-- screen is a Mjolnir screen on which to put the hint.
 function hints.new(x,y,txt,app,screen)
   local hint = hints.__new(x,y,txt,app,screen)
   table.insert(takenPositions, {x = x, y = y})
@@ -36,7 +40,7 @@ end
 
 -- creates a hint that spreads down if it is overlapping another hint.
 function hints.newSpread(x,y,txt,app,screen)
-  local c = hints.bumpPos(x,y)
+  local c = hints._bumpPos(x,y)
   return hints.new(c.x,c.y,txt,app,screen)
 end
 
@@ -60,6 +64,7 @@ function hints.newWinChar(win,extraTxt)
   return hint
 end
 
+-- Close a hint
 function hints.close(hint)
   for i,v in ipairs(openHints) do
     if v == hint then
@@ -70,7 +75,7 @@ function hints.close(hint)
   hint:__close()
 end
 
-function hints.createHandler(char)
+function hints._createHandler(char)
   return function()
     local win = hintDict[char]
     if win then win:focus() end
@@ -79,17 +84,18 @@ function hints.createHandler(char)
   end
 end
 
-function hints.setupModal()
+function hints._setupModal()
   k = modal_hotkey.new({"cmd", "shift"}, "V")
   k:bind({}, 'escape', function() hints.closeAll(); k:exit() end)
 
   for i,c in ipairs(hintChars) do
-    k:bind({}, c, hints.createHandler(c))
+    k:bind({}, c, hints._createHandler(c))
   end
   return k
 end
-modalKey = hints.setupModal()
+modalKey = hints._setupModal()
 
+-- Create window hints for all open windows for fast switching
 function hints.windowHints()
   hints.closeAll()
   for i,win in ipairs(window.allwindows()) do
@@ -99,6 +105,7 @@ function hints.windowHints()
   end
 end
 
+-- Create window hints for a specific app
 function hints.appHints(app)
   if app == nil then return end
   hints.closeAll()
@@ -109,6 +116,7 @@ function hints.appHints(app)
   end
 end
 
+-- Close all hints
 function hints.closeAll()
   for i, hint in ipairs(openHints) do
     if hint then hint:__close() end
