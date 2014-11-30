@@ -60,7 +60,7 @@ function hints.newWinChar(win,extraTxt)
 
   local fr = win:frame()
   local c = {x = fr.x + (fr.w/2), y = fr.y + (fr.h/2)}
-  local hint = hints.newSpread(c.x,c.y,char .. extraTxt,app:bundleid(),win:screen())
+  local hint = hints.newSpread(c.x,c.y,char .. extraTxt,app:bundleid(),screen.allscreens()[1])
   return hint
 end
 

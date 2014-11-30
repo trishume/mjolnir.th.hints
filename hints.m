@@ -126,8 +126,7 @@ static bool createdCache = NO;
   self = [super initWithContentRect:frame
                           styleMask:NSBorderlessWindowMask
                             backing:NSBackingStoreBuffered
-                              defer:NO
-                             screen:screen];
+                              defer:NO];
   if (self) {
     [self setReleasedWhenClosed:NO];
     [self setOpaque:NO];
