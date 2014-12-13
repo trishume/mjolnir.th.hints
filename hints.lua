@@ -55,6 +55,7 @@ function hints.newWinChar(win,extraTxt)
     modalKey:enter()
   end
   local char = hintChars[usedChars+1]
+  if char == nil then return nil end
   hintDict[char] = win
   usedChars = usedChars + 1
 
