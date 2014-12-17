@@ -8,7 +8,7 @@ package = "mjolnir.th.hints"
 --    changing the module's source code.
 --
 --    Note: the version must match the version in the filename.
-version = "1.1-1"
+version = "1.1-2"
 
 -- General metadata:
 
