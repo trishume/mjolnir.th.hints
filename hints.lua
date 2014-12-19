@@ -6,7 +6,7 @@ local screen = require "mjolnir.screen"
 local window = require "mjolnir.window"
 local modal_hotkey = require "mjolnir._asm.modal_hotkey"
 
-local hintChars = {"A","O","E","U","I","D","H","T","N","S","P","G",
+hints.HINTCHARS = {"A","O","E","U","I","D","H","T","N","S","P","G",
                    "M","W","V","J","K","X","B","Y","F"}
 local usedChars = 0
 
@@ -54,7 +54,7 @@ function hints.newWinChar(win,extraTxt)
   if usedChars == 0 then
     modalKey:enter()
   end
-  local char = hintChars[usedChars+1]
+  local char = hints.HINTCHARS[usedChars+1]
   hintDict[char] = win
   usedChars = usedChars + 1
 
@@ -88,7 +88,7 @@ function hints._setupModal()
   k = modal_hotkey.new({"cmd", "shift"}, "V")
   k:bind({}, 'escape', function() hints.closeAll(); k:exit() end)
 
-  for i,c in ipairs(hintChars) do
+  for i,c in ipairs(hints.HINTCHARS) do
     k:bind({}, c, hints._createHandler(c))
   end
   return k
