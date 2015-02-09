@@ -14,6 +14,7 @@ local openHints = {}
 local takenPositions = {}
 local hintDict = {}
 local modalKey = nil
+local hookFunc = nil
 
 local bumpThresh = 40^2
 local bumpMove = 80
@@ -81,6 +82,7 @@ function hints._createHandler(char)
     if win then win:focus() end
     hints.closeAll()
     modalKey:exit()
+    if hookFunc then hookFunc(win) end
   end
 end
 
@@ -96,8 +98,12 @@ end
 modalKey = hints._setupModal()
 
 -- Create window hints for all open windows for fast switching
-function hints.windowHints()
+function hints.windowHints(hook)
   hints.closeAll()
+  if hook then
+    assert(type(hook) == "function", "hook should be a function")
+    hookFunc = hook
+  end
   for i,win in ipairs(window.allwindows()) do
     if win:title() ~= "" then
       hints.newWinChar(win,"")
