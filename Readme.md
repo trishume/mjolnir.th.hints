@@ -1,4 +1,7 @@
-# Mjolnir Window Hints Module
+# Warning: [Hammerspoon](https://github.com/Hammerspoon/hammerspoon) includes this changes out of the box
+
+
+--------
 
 > ## **Fork** *Fixes character overflow with lots of windows*
 
@@ -8,6 +11,9 @@
 - applied @javigon change to hide widgets
   - it didn't work, used win:isstandard() instead, seems to hide the activity monitor window too but I don't care
 
+-------------
+
+# Mjolnir Window Hints Module
 
 
 Provides a fancy method of window switching for [Mjolnir](http://mjolnir.io).
@@ -42,7 +48,7 @@ You can also use `hints.appHints` to switch between windows in an app:
 -- This switches between windows of the focused app
 hotkey.bind({"ctrl","cmd"},"j",function() hints.appHints(window.focusedwindow():application()) end)
 
--- You can also use this with appfinder to switch to windows of a specific app
+-- You can also use thiKBKBs with appfinder to switch to windows of a specific app
 local appfinder = require "mjolnir.cmsj.appfinder"
 hotkey.bind({"ctrl","cmd"},"k",function() hints.appHints(appfinder.app_from_name("Emacs")) end)
 ```
