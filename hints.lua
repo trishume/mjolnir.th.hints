@@ -6,8 +6,8 @@ local screen = require "mjolnir.screen"
 local window = require "mjolnir.window"
 local modal_hotkey = require "mjolnir._asm.modal_hotkey"
 
-local hintChars = {"A","O","E","U","I","D","H","T","N","S","P","G",
-                   "M","W","V","J","K","X","B","Y","F"}
+hints.HINTCHARS = {"s","a","d","f","j","k","l","r","u","g","h","b","m","p","S","A","D","F","J","K","L","R","U","G","H","B","M","P","ws","wa","wd","wf","wj","wk","wl","wr","wu","wg","wh","wb","wm","wp","es","ea","ed","ef","ej","ek","el","er","eu","eg","eh","eb","em","ep","os","oa","od","of","oj","ok","ol","or","ou","og","oh","ob","om","op","vs","va","vd","vf","vj","vk","vl","vr","vu","vg","vh","vb","vm","vp","qs","qa","qd","qf","qj","qk","ql","qr","qu","qg","qh","qb","qm","tp","ts","ta","td","tf","tj","tk","tl","tr","tu","tg","th","tb","tm","tp","yp","ys","ya","yd","yf","yj","yk","yl","yr","yu","yg","yh","yb","ym","yp","zp","zs","za","zd","zf","zj","zk","zl","zr","zu","zg","zh","zb","zm","zp","xp","xs","xa","xd","xf","xj","xk","xl","xr","xu","xg","xh","xb","xm","xp","cp","cs","ca","cd","cf","cj","ck","cl","cr","cu","cg","ch","cb","cm","cp","np","ns","na","nd","nf","nj","nk","nl","nr","nu","ng","nh","nb","nm","np","ip","is","ia","id","if","ij","ik","il","ir","iu","ig","ih","ib","im","ip"}
+
 local usedChars = 0
 
 local openHints = {}
@@ -54,9 +54,13 @@ function hints.newWinChar(win,extraTxt)
   if usedChars == 0 then
     modalKey:enter()
   end
-  local char = hintChars[usedChars+1]
-  hintDict[char] = win
   usedChars = usedChars + 1
+  local char = hints.HINTCHARS[usedChars]
+
+  if char == nil then return nil end
+
+  hintDict[char] = win
+  -- char = char .. "1"
 
   local fr = win:frame()
   local c = {x = fr.x + (fr.w/2), y = fr.y + (fr.h/2)}
@@ -75,32 +79,80 @@ function hints.close(hint)
   hint:__close()
 end
 
+local pressed = ""
+
 function hints._createHandler(char)
   return function()
-    local win = hintDict[char]
-    if win then win:focus() end
-    hints.closeAll()
-    modalKey:exit()
+    -- check sequence of keys and try to find the window
+    pressed = pressed .. char
+
+    local win = hintDict[pressed]
+    if win then 
+      win:focus() 
+      hints.closeAll()
+      modalKey:exit()
+      pressed = ""
+    end
+    
   end
 end
 
 function hints._setupModal()
   k = modal_hotkey.new({"cmd", "shift"}, "V")
-  k:bind({}, 'escape', function() hints.closeAll(); k:exit() end)
+  k:bind({}, 'escape', function() hints.closeAll(); k:exit(); pressed = ""; end)
 
-  for i,c in ipairs(hintChars) do
-    k:bind({}, c, hints._createHandler(c))
+  -- retrieve all keys needed to be registered
+  local characters = {}
+  for i, char in ipairs(hints.HINTCHARS) do
+    for c in char:gmatch"." do
+      
+      if characters[c] ~= 1 then
+        
+        if c == c:lower() then
+          modifiers = {}
+        else
+          modifiers = {'shift'}
+        end
+        
+        k:bind(modifiers, c, hints._createHandler(c))
+        characters[c] = 1
+
+      end
+
+    end
+  end
+
+  -- print(characters)
+  -- register each handler
+  for c, i in ipairs(characters) do
+    
+    print(c, i)
+
+    
+
   end
   return k
 end
 modalKey = hints._setupModal()
 
+function hints.activeWindowHints()
+  hints.closeAll()
+
+  for i,win in ipairs(window.visiblewindows()) do
+    if win:title() ~= "" then
+      hints.newWinChar(win,"")
+    end
+  end
+end
+
 -- Create window hints for all open windows for fast switching
 function hints.windowHints()
   hints.closeAll()
   for i,win in ipairs(window.allwindows()) do
-    if win:title() ~= "" then
-      hints.newWinChar(win,"")
+    if win:isstandard() then
+      if win:title() ~= "" then
+        hints.newWinChar(win,"")
+      end
     end
   end
 end
