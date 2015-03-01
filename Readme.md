@@ -1,5 +1,15 @@
 # Mjolnir Window Hints Module
 
+> ## **Fork** *Fixes character overflow with lots of windows*
+
+> - applied change made by @blackrobot to let you configure keys 
+- modified to let you use 2 or more sequential keys
+- added support for lower and upper case letters
+- applied @javigon change to hide widgets
+  - it didn't work, used win:isstandard() instead, seems to hide the activity monitor window too but I don't care
+
+
+
 Provides a fancy method of window switching for [Mjolnir](http://mjolnir.io).
 Pressing a shortcut brings up "hints" which are app icons with a letter,
 typing that letter focuses the corresponding window.
