@@ -99,7 +99,7 @@ modalKey = hints._setupModal()
 function hints.windowHints()
   hints.closeAll()
   for i,win in ipairs(window.allwindows()) do
-    if win:title() ~= "" then
+    if win:isstandard() then
       hints.newWinChar(win,"")
     end
   end
