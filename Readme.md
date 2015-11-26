@@ -26,6 +26,14 @@ Bind the function `mjolnir.th.hints.windowHints` in your `init.lua` to a key lik
 local hints = require "mjolnir.th.hints"
 hotkey.bind({"cmd"},"e",hints.windowHints)
 ```
+
+By default, the hint keys used are: `A O E U I D H T N S P G M W V J K X B Y F`. To customize the hint keys, change the `hints.HINTCHARS` value to the prefered keys before declaring any bindings:
+
+```lua
+local hints = require "mjolnir.th.hints"
+hints.HINTCHARS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"}
+```
+
 You can also use `hints.appHints` to switch between windows in an app:
 
 ```lua
