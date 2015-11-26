@@ -106,6 +106,16 @@ function hints.windowHints()
   end
 end
 
+-- Create windw hints for all active windows for fast switching
+function hints.activeWindowHints()
+  hints.closeAll()
+  for i,win in ipairs(window.visiblewindows()) do
+    if win:title() ~= "" then
+      hints.newWinChar(win,"")
+    end
+  end
+end
+
 -- Create window hints for a specific app
 function hints.appHints(app)
   if app == nil then return end
